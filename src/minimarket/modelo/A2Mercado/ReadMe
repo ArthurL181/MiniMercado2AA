@@ -1,0 +1,60 @@
+#  A2 Mercado: Sistema de Gerenciamento de Estoque e Vendas
+
+Integrantes:
+Arthur Lucas Dandolini - ArthurL181 - 48984704836 - Og.dandolini@gmail.com
+Arthur Scheffer
+
+Projeto desenvolvido para a criação de um mini mercado, onde o gerente ira realizae a administração
+e futuramente sera adicionado a parte de cliente, onde sera realizado as vendas.
+---
+Funcionalidades:
+
+* **Gerenciamento de Produtos:** Cadastro, edição e consulta de itens.
+* **Controle de Estoque:** Atualização da quantidade de produtos disponíveis.
+
+---
+
+## 🛠️ Requisitos e Configuração
+
+Para executar este projeto localmente, você precisará dos seguintes softwares e configurações.
+
+### 1. Requisitos de Software
+
+* **Java Development Kit (JDK):** Versão 8 ou superior.
+* [cite_start]**Ambiente de Desenvolvimento (IDE):** IntelliJ IDEA [cite: 1][cite_start], Eclipse [cite: 1] [cite_start]ou VS Code[cite: 1].
+* **Servidor de Banco de Dados:** MySQL.
+
+### 2.  Instalação Mysql work Bench e Instalação My Sql conector.
+
+### 3. Configuração do Projeto
+
+1.  Clone este repositório.
+2.  Abra o projeto na sua IDE preferida.
+3.  Verifique se o JDK está configurado corretamente.
+4.  [cite_start]Certifique-se de que a dependência do MySQL Connector está resolvida.
+
+---
+
+##  Como Executar
+
+1.  Após configurar o banco de dados e as dependências (passos acima).
+2.  Localize a classe principal (`Main.java` ou equivalente, que contenha o método `main`).
+3.  Execute a classe principal.
+4.  O sistema de gerenciamento deverá ser inicializado.
+
+---
+
+##  Geração de Relatórios
+
+[cite_start]Os relatórios de Produtos e Vendas podem ser solicitados e são exportados diretamente para arquivos de texto (.txt) no diretório escolhido pelo usuário, contendo detalhes como ID, Nome, Preço e Estoque para Produtos [cite: 4] [cite_start]e Cliente, Data, Total e Pagamento para Vendas[cite: 12].
+
+---
+
+##  Autor
+
+* [Seu Nome Completo]
+* [Seu E-mail ou Link do Perfil, ex: GitHub]
+
+##  Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo `LICENSE` para mais detalhes.

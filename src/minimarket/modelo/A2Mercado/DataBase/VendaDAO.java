@@ -12,54 +12,54 @@ public class VendaDAO {
     public boolean registrarVenda(Venda venda, List<ItemVenda> itens) {
         Connection conn = null;
         try {
-            conn = minimarket.modelo.A2Mercado.DataBase.DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false); // Iniciar transação
 
             // Inserir venda
-            String sqlVenda = "INSERT INTO vendas (cliente_id, total, forma_pagamento) VALUES (?, ?, ?)";
-            PreparedStatement pstmtVenda = conn.prepareStatement(sqlVenda, Statement.RETURN_GENERATED_KEYS);
+            String sqlVenda = "INSERT INTO vendas (cliente_id, total, forma_pagamento, data_venda) VALUES (?, ?, ?, NOW())";
+            PreparedStatement stmtVenda = conn.prepareStatement(sqlVenda, Statement.RETURN_GENERATED_KEYS);
+            stmtVenda.setInt(1, venda.getClienteId());
+            stmtVenda.setBigDecimal(2, venda.getTotal());
+            stmtVenda.setString(3, venda.getFormaPagamento());
 
-            pstmtVenda.setInt(1, venda.getClienteId());
-            pstmtVenda.setBigDecimal(2, venda.getTotal());
-            pstmtVenda.setString(3, venda.getFormaPagamento());
-            pstmtVenda.executeUpdate();
-
-            // Obter ID da venda inserida
-            ResultSet rs = pstmtVenda.getGeneratedKeys();
-            int vendaId = 0;
-            if (rs.next()) {
-                vendaId = rs.getInt(1);
+            int affectedRows = stmtVenda.executeUpdate();
+            if (affectedRows == 0) {
+                conn.rollback();
+                return false;
             }
 
-            // Inserir itens da venda
+            // Obter ID da venda
+            ResultSet generatedKeys = stmtVenda.getGeneratedKeys();
+            int vendaId = 0;
+            if (generatedKeys.next()) {
+                vendaId = generatedKeys.getInt(1);
+            }
+
+            // Inserir itens
             String sqlItem = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstmtItem = conn.prepareStatement(sqlItem);
+            PreparedStatement stmtItem = conn.prepareStatement(sqlItem);
 
             for (ItemVenda item : itens) {
-                pstmtItem.setInt(1, vendaId);
-                pstmtItem.setInt(2, item.getProdutoId());
-                pstmtItem.setInt(3, item.getQuantidade());
-                pstmtItem.setBigDecimal(4, item.getPrecoUnitario());
-                pstmtItem.addBatch();
+                stmtItem.setInt(1, vendaId);
+                stmtItem.setInt(2, item.getProdutoId());
+                stmtItem.setInt(3, item.getQuantidade());
+                stmtItem.setBigDecimal(4, item.getPrecoUnitario());
+                stmtItem.addBatch();
             }
 
-            pstmtItem.executeBatch();
-            conn.commit();
+            stmtItem.executeBatch();
+            conn.commit(); // Confirmar transação
             return true;
 
         } catch (SQLException e) {
-            try {
-                if (conn != null) conn.rollback();
-            } catch (SQLException ex) {
-                System.err.println("Erro no rollback: " + ex.getMessage());
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             }
-            System.err.println("Erro ao registrar venda: " + e.getMessage());
+            e.printStackTrace();
             return false;
         } finally {
-            try {
-                if (conn != null) conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                System.err.println("Erro ao restaurar auto-commit: " + e.getMessage());
+            if (conn != null) {
+                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
         }
     }

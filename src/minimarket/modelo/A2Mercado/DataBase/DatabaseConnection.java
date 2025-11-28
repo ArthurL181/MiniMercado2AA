@@ -18,11 +18,9 @@ public class DatabaseConnection {
     public static void initDatabase() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
 
-            // Criar database se não existir
             stmt.execute("CREATE DATABASE IF NOT EXISTS minimercado");
             stmt.execute("USE minimercado");
 
-            // Tabela produtos - SINTAXE MYSQL CORRIGIDA
             String sqlProdutos = "CREATE TABLE IF NOT EXISTS produtos (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +  // MySQL usa INT AUTO_INCREMENT
                     "nome VARCHAR(100) NOT NULL, " +
@@ -32,7 +30,6 @@ public class DatabaseConnection {
                     "data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             stmt.execute(sqlProdutos);
 
-            // Tabela clientes - SINTAXE MYSQL CORRIGIDA
             String sqlClientes = "CREATE TABLE IF NOT EXISTS clientes (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "nome VARCHAR(100) NOT NULL, " +
@@ -41,7 +38,6 @@ public class DatabaseConnection {
                     "cpf VARCHAR(14) UNIQUE)";
             stmt.execute(sqlClientes);
 
-            // Tabela vendas - SINTAXE MYSQL CORRIGIDA
             String sqlVendas = "CREATE TABLE IF NOT EXISTS vendas (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "cliente_id INT, " +
@@ -51,7 +47,6 @@ public class DatabaseConnection {
                     "FOREIGN KEY (cliente_id) REFERENCES clientes(id))";
             stmt.execute(sqlVendas);
 
-            // Tabela itens_venda - SINTAXE MYSQL CORRIGIDA
             String sqlItensVenda = "CREATE TABLE IF NOT EXISTS itens_venda (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "venda_id INT, " +
@@ -62,7 +57,6 @@ public class DatabaseConnection {
                     "FOREIGN KEY (produto_id) REFERENCES produtos(id))";
             stmt.execute(sqlItensVenda);
 
-            // Inserir produtos - SINTAXE MYSQL CORRIGIDA
             String insertProdutos = "INSERT IGNORE INTO produtos (nome, descricao, preco, quantidade) VALUES " +
                     "('Arroz', 'Arroz branco tipo 1', 25.90, 50), " +
                     "('Feijão', 'Feijão carioca', 8.50, 30), " +
@@ -71,7 +65,6 @@ public class DatabaseConnection {
                     "('Óleo', 'Óleo de soja', 7.80, 35)";
             stmt.execute(insertProdutos);
 
-            // Inserir clientes - SINTAXE MYSQL CORRIGIDA
             String insertClientes = "INSERT IGNORE INTO clientes (nome, email, telefone, cpf) VALUES " +
                     "('João Silva', 'joao@email.com', '(11) 9999-8888', '123.456.789-00'), " +
                     "('Maria Santos', 'maria@email.com', '(11) 7777-6666', '987.654.321-00')";

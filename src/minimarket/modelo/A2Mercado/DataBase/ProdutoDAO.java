@@ -136,24 +136,24 @@ public class ProdutoDAO {
     // Buscar produtos com estoque positivo
     public List<Produto> listarComEstoque() {
         List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM produtos WHERE quantidade > 0 ORDER BY nome";
+        String sql = "SELECT DISTINCT id, nome, preco, quantidade FROM produtos WHERE quantidade > 0 ORDER BY id";
+        // Ou se for problema de JOIN:
+        // String sql = "SELECT DISTINCT p.id, p.nome, p.preco, p.quantidade FROM produtos p WHERE p.quantidade > 0 ORDER BY p.id";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Produto produto = new Produto();
                 produto.setId(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
-                produto.setDescricao(rs.getString("descricao"));
                 produto.setPreco(rs.getBigDecimal("preco"));
                 produto.setQuantidade(rs.getInt("quantidade"));
                 produtos.add(produto);
             }
-
         } catch (SQLException e) {
-            System.err.println("Erro ao listar produtos com estoque: " + e.getMessage());
+            e.printStackTrace();
         }
         return produtos;
     }

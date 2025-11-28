@@ -31,11 +31,16 @@ public class MenuClienteFrame extends JFrame {
         JButton btnVoltar = new JButton("↩ Voltar ao Login");
 
         // Ação do botão Comprar
-        btnComprar.addActionListener(e -> {
-            new VendaFrame(nomeCliente).setVisible(true);
-            this.dispose();
+        // Ação do botão Produtos - CORREÇÃO
+        btnProdutos.addActionListener(e -> {
+            try {
+                new CatalogoClienteFrame().setVisible(true);
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao abrir catálogo: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         });
-
         // Ação do botão Produtos
         btnProdutos.addActionListener(e -> {
             new CatalogoClienteFrame().setVisible(true);

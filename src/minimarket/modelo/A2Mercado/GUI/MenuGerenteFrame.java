@@ -1,8 +1,7 @@
 package minimarket.modelo.A2Mercado.GUI;
-import minimarket.modelo.A2Mercado.GeracaoRelatorioProdutos;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
 
 public class MenuGerenteFrame extends JFrame {
     public MenuGerenteFrame() {
@@ -10,46 +9,6 @@ public class MenuGerenteFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
-
-        class MenuPrincipal {
-
-            public void exibirMenuRelatorios() {
-                Scanner scanner = new Scanner(System.in);
-
-                while (true) {
-                    System.out.println("\n=== GERAR RELATÓRIOS ===");
-                    System.out.println("1. Relatório de Produtos");
-                    System.out.println("2. Relatório de Vendas");
-                    System.out.println("3. Relatório de Estoque Baixo");
-                    System.out.println("4. Voltar ao Menu Principal");
-                    System.out.print("Escolha uma opção: ");
-
-                    int opcao = scanner.nextInt();
-
-                    switch (opcao) {
-                        case 1:
-                            GeracaoRelatorioProdutos.gerarRelatorioProdutos();
-                            break;
-
-                        case 2:
-                            GeracaoRelatorioProdutos.gerarRelatorioVendas();
-                            break;
-
-                        case 3:
-                            System.out.print("Defina o limite mínimo de estoque: ");
-                            int limite = scanner.nextInt();
-                            GeracaoRelatorioProdutos.gerarRelatorioEstoqueBaixo(limite);
-                            break;
-
-                        case 4:
-                            return;
-
-                        default:
-                            System.out.println(" Opção inválida!");
-                    }
-                }
-            }
-        }
 
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
